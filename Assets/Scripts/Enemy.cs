@@ -6,8 +6,9 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public int enemyHp;
-    public GameObject[] attacks = new GameObject[0];
+    public List<GameObject> enemyAttacks = new List<GameObject>();
     public float attackShotSpeed;
+    public float attackCooldown = 2f;
     void Start()
     {
         StartCoroutine(AttackCooldown());
@@ -29,21 +30,21 @@ public class Enemy : MonoBehaviour
         
         Rigidbody2D rb = _instantiatedAttack.GetComponent<Rigidbody2D>();
      
-        rb.velocity = Vector2.left * attackShotSpeed;
+        rb.linearVelocity = Vector2.left * attackShotSpeed;
         
     }
     public GameObject SelectedAttack()
     {
-        int randomIndex = Random.Range(0, attacks.Length);
-        return attacks[randomIndex];
+        int randomIndex = Random.Range(0, enemyAttacks.Count);
+        return enemyAttacks[randomIndex];
         
     }
     
     IEnumerator AttackCooldown()
     {
-        
+        yield return new WaitForSeconds(attackCooldown);
         AttackCreate();
-        yield return new WaitForSeconds(2f);
+       
         StartCoroutine(AttackCooldown());
         
 

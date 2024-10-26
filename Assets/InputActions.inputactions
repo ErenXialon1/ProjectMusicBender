@@ -9,7 +9,7 @@
                     "name": "UpAttackInFight",
                     "type": "Button",
                     "id": "6ea56b51-bce5-48b4-8509-3f91cb27b11f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -46,6 +46,15 @@
                     "type": "Button",
                     "id": "a3e8c246-43f6-48a1-aac9-cf73f7b04372",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "AttackInputClear",
+                    "type": "Button",
+                    "id": "2e0678b4-9e02-44fc-b677-7da3e614716b",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -148,6 +157,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ConfirmAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4e827931-ed02-4671-937b-e3176844c429",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackInputClear",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

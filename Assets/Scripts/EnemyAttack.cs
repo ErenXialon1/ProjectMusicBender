@@ -17,6 +17,7 @@ public class EnemyAttack :MonoBehaviour
         {
 
             DamageThePlayer();
+            Destroy(gameObject);
         }
     }
     public void DamageThePlayer()
