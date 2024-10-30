@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+
 
 [RequireComponent(typeof(PlayerInput))] // Ensure that PlayerInput is attached
 public class Player : MonoBehaviour
@@ -12,87 +17,172 @@ public class Player : MonoBehaviour
     public float playerHp = 100;
 
     [Tooltip("Maximum number of inputs the player can make")]
-    public int playerInputCap = 6;
+    public int playerInputCap = 4; // Default input cap, can increase later
+    [Header("Addressable Skill References")]
+    public List<string> skillAddresses; // List of addresses for ScriptableObjects
 
     // Input System Reference
     [Header("Input System")]
     [Tooltip("Reference to the PlayerInput component used for handling player controls")]
     public PlayerInput playerInput;
 
-    // References and Lists
-    [Header("Skill and Attack Settings")]
-    [Tooltip("List of player attack prefabs associated with each direction")]
-    public List<GameObject> playerAttacks = new List<GameObject>();
+    // Input Data
+    [Header("Input Data")]
+    [Tooltip("List of recent inputs the player has made")]
+    public List<string> recentInputs = new List<string>(); // Holds the player's recent inputs (up to cap)
 
+    [Tooltip("Confirmed skills to show in UI")]
+    public List<SkillData> confirmedCombinations = new List<SkillData>(); // Confirmed skills to show in UI
+
+    [Tooltip("Skills that are queued to execute")]
+    public List<SkillData> skillsWaitingForExecute = new List<SkillData>(); // Skills that are queued to execute
+
+    // References
+    [Header("Skill and Attack Settings")]
     [Tooltip("List of skills available to the player")]
     public List<SkillData> availableSkills; // Set these up in the Inspector
 
-    // Internal data and dictionaries
-    [Header("Internal Data")]
-    [Tooltip("Stores the current input sequence of the player")]
-    public List<string> inputSequence = new List<string>();
-
-    [Tooltip("Map of input combinations to skill GameObjects")]
-    public Dictionary<string, GameObject> skillMap;
-
     [Tooltip("Map of directions to corresponding sprites for display")]
-    public Dictionary<string, Sprite> directionSprites; // A dictionary to map directions to sprites
+    public Dictionary<string, Sprite> directionSprites; // Map of input directions to sprites
 
     // Flags and States
     [Header("Player States")]
     [Tooltip("Indicates whether the player is executing skills")]
     public bool isExecutingSkills = false;
 
-    // References
     [Header("UI and Display")]
-    [Tooltip("Reference to the PlayerAttackPanel script that handles the UI for displaying inputs")]
-    public PlayerAttackPanel playerAttackPanel;
-
-    // Internal Skill Queue
-    private List<ICommand> skillQueue = new List<ICommand>();
+    [Tooltip("Reference to the PlayerUIManager script that handles the UI for displaying inputs")]
+    public PlayerUIManager uiManager;
 
     void Start()
     {
         // Fetch and set up PlayerInput component
         playerInput = GetComponent<PlayerInput>();
+        uiManager = GameObject.Find("PlayerUI").GetComponent<PlayerUIManager>();
 
-        // Initialize skill map with predefined combinations
-        // You can dynamically set this up based on your game's requirements
-        skillMap = new Dictionary<string, GameObject>
+        // Attempt to find the PlayerUIManager GameObject by name
+        if (uiManager == null)
         {
-            { "W", playerAttacks[0] },
-            { "ASD", playerAttacks[1] },
-            { "WASD", playerAttacks[2] }
-        };
+            Debug.LogWarning("PlayerUIManager script reference not set. Please assign it in the Inspector.");
+        }
 
-        // Initialize directionSprites dictionary with corresponding sprites
-        directionSprites = new Dictionary<string, Sprite>
+        InitializeDefaultSkillAddressList();
+        InitializeDefaultSkills();
+        InitializeDirectionSprites();
+    }
+    private void InitializeSkillAddress(string skillAddress)
+    {
+        // Assign the address strings based on your Addressable settings
+        if (!skillAddresses.Contains(skillAddress)) // Ensure no duplicates in the list
         {
-            { "W", playerAttacks[0].GetComponent<SpriteRenderer>().sprite },
-            { "D", playerAttacks[1].GetComponent<SpriteRenderer>().sprite },
-            { "A", playerAttacks[2].GetComponent<SpriteRenderer>().sprite },
-            { "S", playerAttacks[3].GetComponent<SpriteRenderer>().sprite }
-        };
+            skillAddresses.Add(skillAddress);   // These should match the addresses you assigned in the Addressables window
+        }
 
-        // Attempt to find the PlayerAttackPanel GameObject by name
-        playerAttackPanel = GameObject.Find("PlayerAttackPanel")?.GetComponent<PlayerAttackPanel>();
-        if (playerAttackPanel == null)
+    }
+    private void InitializeDefaultSkills()
+    {
+        LoadSkill("Skills/SingleInput/BasicAttack_W");
+        LoadSkill("Skills/SingleInput/BasicAttack_A");
+        LoadSkill("Skills/SingleInput/BasicAttack_S");
+        LoadSkill("Skills/SingleInput/BasicAttack_D");
+        LoadSkill("Skills/DoubleInput/DoubleInput_WA");
+
+    }
+    /// <summary>
+    /// Loads all skills from Addressables based on their addresses.
+    /// </summary>
+    private void LoadSkill(string address)
+    {
+
+        if (!string.IsNullOrEmpty(address)) // Ensure the address is not null or empty
         {
-            Debug.LogWarning("PlayerAttackPanel GameObject not found or missing PlayerAttackPanel component.");
+            Addressables.LoadAssetAsync<SkillData>(address).Completed += (handle) => OnSkillLoaded(handle, address);
+        }
+        else
+        {
+            Debug.LogWarning("Attempted to load a skill with an empty or null address.");
+        }
+
+    }
+
+    /// <summary>
+    /// Called when a SkillData ScriptableObject is loaded.
+    /// </summary>
+    private void OnSkillLoaded(AsyncOperationHandle<SkillData> handle, string address)
+    {
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            SkillData skill = handle.Result;
+            if (skill != null)
+            {
+                // Check if the skill is already in the availableSkills list to avoid duplicates
+                bool skillAlreadyExists = availableSkills.Exists(s => s.skillName == skill.skillName);
+
+                if (!skillAlreadyExists)
+                {
+                    availableSkills.Add(skill);
+                    Debug.Log($"Loaded and added skill: {skill.skillName}");
+                }
+                else
+                {
+                    Debug.Log($"Skill {skill.skillName} already exists in availableSkills. Skipping.");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Failed to load skill from Addressable Assets at address: {address}");
         }
     }
+    public void InitializeDirectionSprites()
+    {
+        // Initialize the dictionary if it's not already
+        if (directionSprites == null)
+            directionSprites = new Dictionary<string, Sprite>();
+
+        // Manually assign sprites directly from the project (or use a ScriptableObject setup as described previously)
+        directionSprites["W"] = LoadSpriteFromPath("Sprites/UI/UpArrowKey");
+        directionSprites["D"] = LoadSpriteFromPath("Sprites/UI/RightArrowKey");
+        directionSprites["A"] = LoadSpriteFromPath("Sprites/UI/LeftArrowKey");
+        directionSprites["S"] = LoadSpriteFromPath("Sprites/UI/DownArrowKey");
+    }
+
+    // Helper method to load sprites from a specific path (for illustration purposes)
+    private Sprite LoadSpriteFromPath(string path)
+    {
+        Sprite sprite = Addressables.LoadAssetAsync<Sprite>(path).WaitForCompletion();
+        if (sprite == null)
+        {
+            Debug.LogWarning($"Sprite not found at path: {path}");
+        }
+        return sprite;
+    }
+    
+    /// <summary>
+    /// Initializes default skills that are available to the player at the start.
+    /// </summary>
+    private void InitializeDefaultSkillAddressList()
+    {
+        InitializeSkillAddress("Skills/SingleInput/BasicAttack_W");
+        InitializeSkillAddress("Skills/SingleInput/BasicAttack_A");
+        InitializeSkillAddress("Skills/SingleInput/BasicAttack_S");
+        InitializeSkillAddress("Skills/SingleInput/BasicAttack_D");
+        InitializeSkillAddress("Skills/DoubleInput/DoubleInput_WA");
+
+    }
+    
 
     #region Input Handling
 
     /// <summary>
-    /// Adds a direction input to the sequence, displays it on the UI.
+    /// Adds a direction input to the recent inputs list and updates the UI.
     /// </summary>
     public void AddInput(string direction)
     {
-        if (inputSequence.Count < playerInputCap && !isExecutingSkills)
+        if (recentInputs.Count < playerInputCap)
         {
-            inputSequence.Add(direction);
-            playerAttackPanel.DisplayInput(inputSequence, directionSprites);
+            recentInputs.Add(direction);
+            uiManager.UpdateRecentInputUI(recentInputs, directionSprites);
         }
     }
 
@@ -122,57 +212,82 @@ public class Player : MonoBehaviour
     #region Skill Management
 
     /// <summary>
-    /// Confirms the input combination and queues up a matching skill for execution.
+    /// Confirms the current input combination as a skill if it is available and queues it up.
     /// </summary>
     public void ConfirmInputCombination(InputAction.CallbackContext context)
     {
-        if (!isExecutingSkills && context.performed)
+        if (!context.performed) return; // Exit if the action wasn't fully performed
+
+        string combination = string.Join("", recentInputs);
+
+        // Check if the confirmed combination matches any available skill
+        SkillData confirmedSkill = availableSkills.Find(skill => skill.combination == combination);
+
+        if (confirmedSkill != null)
         {
-            // Combine the input sequence into a string and find a matching skill
-            string combination = string.Join("", inputSequence);
-            SkillData matchingSkill = availableSkills.Find(skill => skill.combination == combination);
+            // Clear recent inputs after confirming
+            ClearInputSequence(context);
+            uiManager.ClearRecentInputUI();
 
-            if (matchingSkill != null)
+            // Add the confirmed skill to the queue
+            skillsWaitingForExecute.Add(confirmedSkill);
+
+            
+
+            // Add the newly confirmed skill to the list
+            confirmedCombinations.Add(confirmedSkill);
+            uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
+
+            // Start executing the queued skills if not already executing
+            if (!isExecutingSkills)
             {
-                // Find a target (this example uses the closest enemy)
-                Transform target = FindClosestEnemy();
-                if (target != null)
-                {
-                    // Create a skill command and add it to the queue
-                    ICommand command = new SkillCommand(matchingSkill.skillPrefab, 10f, target);
-                    skillQueue.Add(command);
-                }
+                StartCoroutine(ProcessSkillQueue());
             }
-
-            // Clear the input sequence and UI
-            inputSequence.Clear();
-            playerAttackPanel.ClearDisplay();
+        }
+        else
+        {
+            // Clear the UI and recent inputs if the combination is not recognized
+            ClearInputSequence(context);
+            uiManager.ClearRecentInputUI();
         }
     }
-
     /// <summary>
-    /// Clears the current input sequence.
+    /// Coroutine to process and execute queued skills in order.
+    /// </summary>
+    private IEnumerator ProcessSkillQueue()
+    {
+        if (isExecutingSkills) yield break;
+        isExecutingSkills = true;
+
+        while (skillsWaitingForExecute.Count > 0)
+        {
+            // Get the next skill from the queue
+            SkillData currentSkill = skillsWaitingForExecute[0];
+            skillsWaitingForExecute.RemoveAt(0);
+
+           
+
+            // Example delay to simulate execution (replace with actual execution logic)
+            // yield return new WaitForSeconds(1f);
+            yield return ExecuteSkillCoroutine(currentSkill);
+            // After finishing the current skill, continue to the next one if available
+        }
+
+        isExecutingSkills = false;
+    }
+    /// <summary>
+    /// Clears the recent input list.
     /// </summary>
     public void ClearInputSequence(InputAction.CallbackContext context)
     {
         if (context.performed)
-        {
-            inputSequence.Clear();
-            playerAttackPanel.ClearDisplay();
+        { 
+        recentInputs.Clear();
+        uiManager.ClearRecentInputUI();
         }
     }
 
-    /// <summary>
-    /// Executes all the queued skills in order.
-    /// </summary>
-    public void ExecuteSkillQueue(InputAction.CallbackContext context)
-    {
-        if (skillQueue.Count > 0 && !isExecutingSkills && context.performed)
-        {
-            StartCoroutine(ExecuteSkillsInOrder());
-        }
-    }
-
+    
     #endregion
 
     #region Skill Execution
@@ -180,18 +295,39 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Coroutine to execute all queued skills with a delay between each.
     /// </summary>
-    private IEnumerator ExecuteSkillsInOrder()
+    
+    private IEnumerator ExecuteSkillCoroutine(SkillData skill)
     {
-        isExecutingSkills = true;
+        
 
-        foreach (var command in skillQueue)
+        // Instantiate or play the skill's effect/animation
+        Debug.Log($"Executing skill: {skill.skillName}");
+        // Example: Play animation or instantiate effect here, based on your game's design
+        // yield return new WaitForSeconds(skill.animationDuration); // Adjust based on your skill's effect
+
+        yield return new WaitForSeconds(1f); // Example delay
+
+        // After skill execution, initiate a delay before removing the skill from the UI
+        StartCoroutine(RemoveExecutedSkillFromUI(skill));
+
+
+    }
+    /// <summary>
+    /// Coroutine to remove the executed skill's image from the UI after a delay.
+    /// </summary>
+    private IEnumerator RemoveExecutedSkillFromUI(SkillData skill)
+    {
+        int index = confirmedCombinations.IndexOf(skill);
+        if (index == -1) yield break;
+
+        yield return new WaitForSeconds(1f);
+
+        if (index != -1)
         {
-            command.Execute();
-            yield return new WaitForSeconds(1f); // Adjust as necessary for timing
+            uiManager.DiscardConfirmedSkillFromUI(index);
+            confirmedCombinations.RemoveAt(index);
+            uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
         }
-
-        skillQueue.Clear();
-        isExecutingSkills = false;
     }
 
     #endregion

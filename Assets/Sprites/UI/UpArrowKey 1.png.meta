@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6d0ed40442e33bb4b81c7c1ae509e29c
+guid: 0a7d8b07dd247df4e9ae57c19f100723
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 1583819996253020833
-    second: UpArrowKey_0
+      213: 4490306953969895866
+    second: UpArrowKey 1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,12 +51,12 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 500
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -152,42 +152,33 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: UpArrowKey_0
+      name: UpArrowKey 1_0
       rect:
         serializedVersion: 2
-        x: 239
-        y: 240
-        width: 1321
-        height: 1321
+        x: 138
+        y: 50
+        width: 1323
+        height: 1323
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 75c2e8ebf0ff82f4e9fc657053f3b1d7
-      internalID: 4095927
+      spriteID: ab987db4266c05e30800000000000000
+      internalID: 4490306953969895866
       vertices: []
       indices: 
       edges: []
       weights: []
     outline: []
     customData: 
-    physicsShape:
-    - - {x: 153, y: -507}
-      - {x: 662, y: 2}
-      - {x: 662, y: 8}
-      - {x: 12, y: 663}
-      - {x: 6, y: 663}
-      - {x: -663, y: -6}
-      - {x: -663, y: -7}
-      - {x: -13, y: -662}
-      - {x: -8, y: -662}
+    physicsShape: []
     bones: []
-    spriteID: a35386515e233dc46b9c599743cd54fd
-    internalID: 1038805709
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -196,7 +187,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      UpArrowKey_0: 4095927
+      UpArrowKey 1_0: 4490306953969895866
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

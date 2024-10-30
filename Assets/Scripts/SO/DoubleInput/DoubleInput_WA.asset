@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 617c9ac4274041241a5d2760a88df21e, type: 3}
+  m_Name: DoubleInput_WA
+  m_EditorClassIdentifier: 
+  skillName: DoubleInput_WA
+  combination: WA
+  damage: 12
+  skillPrefab: {fileID: 5367639201051958135, guid: cd63b54eacf06ad44bfe49ff75397c3d, type: 3}
+  skillImage: {fileID: 21300000, guid: dead86aea5056ac49b778294b258c1cd, type: 3}

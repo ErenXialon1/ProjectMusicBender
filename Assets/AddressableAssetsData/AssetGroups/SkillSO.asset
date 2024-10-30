@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: SkillSO
+  m_EditorClassIdentifier: 
+  m_GroupName: SkillSO
+  m_GUID: c3cb6d13bf0a893469d8b6a2f06fcfe1
+  m_SerializeEntries:
+  - m_GUID: 02485ae3cd7c55940bb94adf8dddc2c9
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill3.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 08860a2225efdcc4aa68be156550055d
+    m_Address: Skills/SingleInput/BasicAttack_S
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0cc19a03b5371fd4a832528a6ca0b64d
+    m_Address: Skills/SingleInput/BasicAttack_D
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24d00cb70d92d1d47b89933024da2627
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill10.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 303952ca92c9ca34eba53aad2d8d34af
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill6.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a9cf99ccbc08c54384d81fd2e24c569
+    m_Address: Skills/SingleInput/BasicAttack_A
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 64af0e2d727440445a4f94c81ceb537f
+    m_Address: Skills/DoubleInput/DoubleInput_WA
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 66d305494f9b41946b3481913e818ca3
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill9.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83eb8cd079be27e41873a367efc5eb8a
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill11.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad1e3e10c657fa04db63a6f6ea8e5caa
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill5.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2b95416c039abf40a60f0e256b51a95
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill4.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cdf4767e4f14e0244b6852fa8b176a15
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill7.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d681b8eefc9b812418273815fdd23d69
+    m_Address: Assets/Scripts/SO/DoubleInput/Skill8.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f27dfd6c71a9a514a84bc972bfd2f27e
+    m_Address: Skills/SingleInput/BasicAttack_W
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 105d210fc814cc745be0dd115d96b020, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: bf785d60bc16af94895c34105aac1756, type: 2}
+    - {fileID: 11400000, guid: 4d7484608a5539f41aad89a3fe56316c, type: 2}
