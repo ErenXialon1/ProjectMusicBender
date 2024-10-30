@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+
 public class PlayerUIManager : MonoBehaviour
 {
     [Header("UI Elements")]
@@ -73,6 +74,7 @@ public class PlayerUIManager : MonoBehaviour
             else
             {
                 confirmedSkillUIBlocks[i].GetComponent<Image>().sprite = null;
+
             }
         }
     }
@@ -88,5 +90,3 @@ public class PlayerUIManager : MonoBehaviour
         }
     }
 }
-
-

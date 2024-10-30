@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using DG.Tweening;
 
 
 [RequireComponent(typeof(PlayerInput))] // Ensure that PlayerInput is attached
@@ -157,7 +158,7 @@ public class Player : MonoBehaviour
         }
         return sprite;
     }
-    
+
     /// <summary>
     /// Initializes default skills that are available to the player at the start.
     /// </summary>
@@ -170,7 +171,7 @@ public class Player : MonoBehaviour
         InitializeSkillAddress("Skills/DoubleInput/DoubleInput_WA");
 
     }
-    
+
 
     #region Input Handling
 
@@ -232,7 +233,7 @@ public class Player : MonoBehaviour
             // Add the confirmed skill to the queue
             skillsWaitingForExecute.Add(confirmedSkill);
 
-            
+
 
             // Add the newly confirmed skill to the list
             confirmedCombinations.Add(confirmedSkill);
@@ -265,7 +266,7 @@ public class Player : MonoBehaviour
             SkillData currentSkill = skillsWaitingForExecute[0];
             skillsWaitingForExecute.RemoveAt(0);
 
-           
+
 
             // Example delay to simulate execution (replace with actual execution logic)
             // yield return new WaitForSeconds(1f);
@@ -281,13 +282,13 @@ public class Player : MonoBehaviour
     public void ClearInputSequence(InputAction.CallbackContext context)
     {
         if (context.performed)
-        { 
-        recentInputs.Clear();
-        uiManager.ClearRecentInputUI();
+        {
+            recentInputs.Clear();
+            uiManager.ClearRecentInputUI();
         }
     }
 
-    
+
     #endregion
 
     #region Skill Execution
@@ -295,20 +296,20 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Coroutine to execute all queued skills with a delay between each.
     /// </summary>
-    
+
     private IEnumerator ExecuteSkillCoroutine(SkillData skill)
     {
-        
+
 
         // Instantiate or play the skill's effect/animation
         Debug.Log($"Executing skill: {skill.skillName}");
         // Example: Play animation or instantiate effect here, based on your game's design
         // yield return new WaitForSeconds(skill.animationDuration); // Adjust based on your skill's effect
-
-        yield return new WaitForSeconds(1f); // Example delay
-
         // After skill execution, initiate a delay before removing the skill from the UI
         StartCoroutine(RemoveExecutedSkillFromUI(skill));
+        yield return new WaitForSeconds(1f); // Example delay
+
+
 
 
     }
@@ -318,16 +319,27 @@ public class Player : MonoBehaviour
     private IEnumerator RemoveExecutedSkillFromUI(SkillData skill)
     {
         int index = confirmedCombinations.IndexOf(skill);
-        if (index == -1) yield break;
+        if (index == -1) yield break; // Exit if the skill is not found in the list
 
-        yield return new WaitForSeconds(1f);
+        // Get the UI block for the confirmed skill
+        Image skillImage = uiManager.confirmedSkillUIBlocks[index].GetComponent<Image>();
+        RectTransform skillRect = skillImage.GetComponent<RectTransform>();
 
-        if (index != -1)
-        {
-            uiManager.DiscardConfirmedSkillFromUI(index);
-            confirmedCombinations.RemoveAt(index);
-            uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
-        }
+        // Fade out the image and move it upwards simultaneously
+        skillImage.DOFade(0f, 0.25f); // Fade out over 0.25 seconds
+        skillRect.DOAnchorPosY(skillRect.anchoredPosition.y + 30f, 0.25f); // Move upwards by 30 units over 0.25 seconds
+
+        // Wait for the animation to complete
+        yield return new WaitForSeconds(0.25f);
+
+        // After the fade and move animation is complete, reset the image and update the UI
+        skillImage.sprite = null;
+        skillImage.DOFade(1f, 0f); // Reset the alpha to fully opaque (in case it's reused)
+        skillRect.anchoredPosition = new Vector2(skillRect.anchoredPosition.x, skillRect.anchoredPosition.y - 30f); // Reset the position
+
+        // Remove the skill from the confirmed combinations list and update the UI
+        confirmedCombinations.RemoveAt(index);
+        uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
     }
 
     #endregion
