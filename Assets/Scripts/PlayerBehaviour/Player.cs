@@ -52,14 +52,14 @@ public class Player : MonoBehaviour
     public bool isExecutingSkills = false;
 
     [Header("UI and Display")]
-    [Tooltip("Reference to the PlayerUIManager script that handles the UI for displaying inputs")]
-    public PlayerUIManager uiManager;
+    [SerializeField, Tooltip("Reference to the PlayerUIManager script that handles the UI for displaying inputs")]
+    private PlayerUIManager uiManager;
 
     void Start()
     {
         // Fetch and set up PlayerInput component
         playerInput = GetComponent<PlayerInput>();
-        uiManager = GameObject.Find("PlayerUI").GetComponent<PlayerUIManager>();
+        
 
         // Attempt to find the PlayerUIManager GameObject by name
         if (uiManager == null)
@@ -67,9 +67,8 @@ public class Player : MonoBehaviour
             Debug.LogWarning("PlayerUIManager script reference not set. Please assign it in the Inspector.");
         }
 
-        InitializeDefaultSkillAddressList();
         InitializeDefaultSkills();
-        InitializeDirectionSprites();
+        InitializeDefaultDirectionSprites();
     }
     private void InitializeSkillAddress(string skillAddress)
     {
@@ -80,30 +79,19 @@ public class Player : MonoBehaviour
         }
 
     }
-    private void InitializeDefaultSkills()
-    {
-        LoadSkill("Skills/SingleInput/BasicAttack_W");
-        LoadSkill("Skills/SingleInput/BasicAttack_A");
-        LoadSkill("Skills/SingleInput/BasicAttack_S");
-        LoadSkill("Skills/SingleInput/BasicAttack_D");
-        LoadSkill("Skills/DoubleInput/DoubleInput_WA");
 
-    }
     /// <summary>
     /// Loads all skills from Addressables based on their addresses.
     /// </summary>
     private void LoadSkill(string address)
     {
-
-        if (!string.IsNullOrEmpty(address)) // Ensure the address is not null or empty
+        if (string.IsNullOrEmpty(address) || availableSkills.Any(skill => skill.skillAddress == address))
         {
-            Addressables.LoadAssetAsync<SkillData>(address).Completed += (handle) => OnSkillLoaded(handle, address);
-        }
-        else
-        {
-            Debug.LogWarning("Attempted to load a skill with an empty or null address.");
+            Debug.LogWarning($"Skill at {address} already loaded or address is empty.");
+            return;
         }
 
+        Addressables.LoadAssetAsync<SkillData>(address).Completed += handle => OnSkillLoaded(handle, address);
     }
 
     /// <summary>
@@ -135,17 +123,15 @@ public class Player : MonoBehaviour
             Debug.LogWarning($"Failed to load skill from Addressable Assets at address: {address}");
         }
     }
-    public void InitializeDirectionSprites()
+    private void InitializeDefaultDirectionSprites()
     {
-        // Initialize the dictionary if it's not already
-        if (directionSprites == null)
-            directionSprites = new Dictionary<string, Sprite>();
-
-        // Manually assign sprites directly from the project (or use a ScriptableObject setup as described previously)
-        directionSprites["W"] = LoadSpriteFromPath("Sprites/UI/UpArrowKey");
-        directionSprites["D"] = LoadSpriteFromPath("Sprites/UI/RightArrowKey");
-        directionSprites["A"] = LoadSpriteFromPath("Sprites/UI/LeftArrowKey");
-        directionSprites["S"] = LoadSpriteFromPath("Sprites/UI/DownArrowKey");
+        directionSprites = directionSprites ?? new Dictionary<string, Sprite>
+    {
+        { "W", LoadSpriteFromPath("Sprites/UI/UpArrowKey") },
+        { "D", LoadSpriteFromPath("Sprites/UI/RightArrowKey") },
+        { "A", LoadSpriteFromPath("Sprites/UI/LeftArrowKey") },
+        { "S", LoadSpriteFromPath("Sprites/UI/DownArrowKey") }
+    };
     }
 
     // Helper method to load sprites from a specific path (for illustration purposes)
@@ -162,14 +148,25 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Initializes default skills that are available to the player at the start.
     /// </summary>
-    private void InitializeDefaultSkillAddressList()
+    private void InitializeDefaultSkills()
     {
-        InitializeSkillAddress("Skills/SingleInput/BasicAttack_W");
-        InitializeSkillAddress("Skills/SingleInput/BasicAttack_A");
-        InitializeSkillAddress("Skills/SingleInput/BasicAttack_S");
-        InitializeSkillAddress("Skills/SingleInput/BasicAttack_D");
-        InitializeSkillAddress("Skills/DoubleInput/DoubleInput_WA");
+        List<string> defaultSkills = new List<string>
+    {
+        "Skills/SingleInput/BasicAttack_W",
+        "Skills/SingleInput/BasicAttack_A",
+        "Skills/SingleInput/BasicAttack_S",
+        "Skills/SingleInput/BasicAttack_D",
+        "Skills/DoubleInput/DoubleInput_WA"
+    };
 
+        foreach (var skillAddress in defaultSkills)
+        {
+            if (!skillAddresses.Contains(skillAddress))
+            {
+                skillAddresses.Add(skillAddress);
+                LoadSkill(skillAddress);
+            }
+        }
     }
 
 
@@ -186,6 +183,7 @@ public class Player : MonoBehaviour
             uiManager.UpdateRecentInputUI(recentInputs, directionSprites);
         }
     }
+   
 
     // Input callbacks from Unity's Input System
     public void OnAttackUp(InputAction.CallbackContext context)
@@ -228,7 +226,7 @@ public class Player : MonoBehaviour
         {
             // Clear recent inputs after confirming
             ClearInputSequence(context);
-            uiManager.ClearRecentInputUI();
+            
 
             // Add the confirmed skill to the queue
             skillsWaitingForExecute.Add(confirmedSkill);
@@ -249,7 +247,7 @@ public class Player : MonoBehaviour
         {
             // Clear the UI and recent inputs if the combination is not recognized
             ClearInputSequence(context);
-            uiManager.ClearRecentInputUI();
+            
         }
     }
     /// <summary>
@@ -263,7 +261,7 @@ public class Player : MonoBehaviour
         while (skillsWaitingForExecute.Count > 0)
         {
             // Get the next skill from the queue
-            SkillData currentSkill = skillsWaitingForExecute[0];
+            SkillData currentSkill = skillsWaitingForExecute.First();
             skillsWaitingForExecute.RemoveAt(0);
 
 
@@ -299,48 +297,29 @@ public class Player : MonoBehaviour
 
     private IEnumerator ExecuteSkillCoroutine(SkillData skill)
     {
-
-
+        float skillAnimationLength;
+        if (skill.skillAnimation != null)
+        {
+            skillAnimationLength = skill.skillAnimation.clip.length;
+        }
+        else
+        {
+            CustomLogger.Log("Skill animation isn't assigned, applying default animation length which is 1");
+            skillAnimationLength = 1f; 
+        }
         // Instantiate or play the skill's effect/animation
         Debug.Log($"Executing skill: {skill.skillName}");
         // Example: Play animation or instantiate effect here, based on your game's design
         // yield return new WaitForSeconds(skill.animationDuration); // Adjust based on your skill's effect
         // After skill execution, initiate a delay before removing the skill from the UI
-        StartCoroutine(RemoveExecutedSkillFromUI(skill));
-        yield return new WaitForSeconds(1f); // Example delay
+        StartCoroutine(uiManager.RemoveExecutedSkillFromUI(skill));
+        yield return new WaitForSeconds(skillAnimationLength); // Example delay
 
 
 
 
     }
-    /// <summary>
-    /// Coroutine to remove the executed skill's image from the UI after a delay.
-    /// </summary>
-    private IEnumerator RemoveExecutedSkillFromUI(SkillData skill)
-    {
-        int index = confirmedCombinations.IndexOf(skill);
-        if (index == -1) yield break; // Exit if the skill is not found in the list
-
-        // Get the UI block for the confirmed skill
-        Image skillImage = uiManager.confirmedSkillUIBlocks[index].GetComponent<Image>();
-        RectTransform skillRect = skillImage.GetComponent<RectTransform>();
-
-        // Fade out the image and move it upwards simultaneously
-        skillImage.DOFade(0f, 0.25f); // Fade out over 0.25 seconds
-        skillRect.DOAnchorPosY(skillRect.anchoredPosition.y + 30f, 0.25f); // Move upwards by 30 units over 0.25 seconds
-
-        // Wait for the animation to complete
-        yield return new WaitForSeconds(0.25f);
-
-        // After the fade and move animation is complete, reset the image and update the UI
-        skillImage.sprite = null;
-        skillImage.DOFade(1f, 0f); // Reset the alpha to fully opaque (in case it's reused)
-        skillRect.anchoredPosition = new Vector2(skillRect.anchoredPosition.x, skillRect.anchoredPosition.y - 30f); // Reset the position
-
-        // Remove the skill from the confirmed combinations list and update the UI
-        confirmedCombinations.RemoveAt(index);
-        uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
-    }
+    
 
     #endregion
 

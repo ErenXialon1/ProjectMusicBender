@@ -15,5 +15,8 @@ MonoBehaviour:
   skillName: BasicAttack_A
   combination: A
   damage: 5
+  skillAnimation: {fileID: 0}
+  skillAnimationTime: 0
   skillPrefab: {fileID: 2140829892611404321, guid: af0e664a24730794f9fbd78758eabb7d, type: 3}
   skillImage: {fileID: 21300000, guid: 29124e97c815e5e4b9d83bf62e59d67b, type: 3}
+  skillAddress: Skills/SingleInput/BasicAttack_A
