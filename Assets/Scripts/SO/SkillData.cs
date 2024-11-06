@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewSkill", menuName = "Skill System/Skill Data")]
 public class SkillData : ScriptableObject
 {
-    public string skillName; // Name of the skill
+    public string skillName; // statName of the skill
     public string combination; // The combination needed to execute the skill (e.g., "WA", "WASD")
     public float damage; // Damage value of the skill
     public Animation skillAnimation; // Animation for the skill

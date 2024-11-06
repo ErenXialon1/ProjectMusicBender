@@ -24,7 +24,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     ""name"": ""InputActions"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""Overworld"",
+            ""id"": ""aa63ed85-c902-4ab5-a7fc-7b6f37d6b203"",
+            ""actions"": [],
+            ""bindings"": []
+        },
+        {
+            ""name"": ""Battle"",
             ""id"": ""ccd568b7-1762-4b86-acf0-af076c8833be"",
             ""actions"": [
                 {
@@ -76,24 +82,6 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""name"": ""AttackInputClear"",
                     ""type"": ""Button"",
                     ""id"": ""2e0678b4-9e02-44fc-b677-7da3e614716b"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""ExecuteSkillQuete"",
-                    ""type"": ""Button"",
-                    ""id"": ""7dbecadf-2f69-47f3-a94d-eb63ef4426f6"",
-                    ""expectedControlType"": """",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""InputOnOff"",
-                    ""type"": ""Button"",
-                    ""id"": ""e2cd775a-d536-4388-bd7e-e9f3e4176739"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -210,26 +198,156 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""action"": ""AttackInputClear"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""QTE"",
+            ""id"": ""f863ca7d-1f4c-4ade-98a2-a66c52776267"",
+            ""actions"": [
+                {
+                    ""name"": ""QTE_Up"",
+                    ""type"": ""Button"",
+                    ""id"": ""aa7aa1f6-38f2-44ca-a82d-44f90625ac88"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""QTE_Down"",
+                    ""type"": ""Button"",
+                    ""id"": ""3fefb3cf-a716-4b77-b4f3-d0c60e8bb679"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QTE_Right"",
+                    ""type"": ""Button"",
+                    ""id"": ""60ff812a-4e0e-4e78-b026-aee269e6c732"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QTE_Left"",
+                    ""type"": ""Button"",
+                    ""id"": ""dc6d09cd-b7e6-433f-babd-40106549654b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ActivateBattleMap"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f107936-bf9a-410c-8b61-b73b3022669b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
                     ""name"": """",
-                    ""id"": ""d99b455e-6107-4a4b-8e73-981598de60ac"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""id"": ""098eb13c-c9f0-4c08-9681-4409f5a5c1a1"",
+                    ""path"": ""<Keyboard>/upArrow"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteSkillQuete"",
+                    ""action"": ""QTE_Up"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""99196ab0-e66a-462a-aa14-4664d8b30e17"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""id"": ""0540f06d-58ef-46ae-9844-a3f65ff11403"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""InputOnOff"",
+                    ""action"": ""QTE_Up"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c46234c0-5f63-409d-942a-0fcfb365ea9b"",
+                    ""path"": ""<Keyboard>/downArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5ce4e5e8-be95-4945-9073-9bc23c7bdf7b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Down"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8403ddd-5088-4131-8bbb-785f06715c4a"",
+                    ""path"": ""<Keyboard>/rightArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""968488dc-1f24-49d1-b3a1-bda72c89474d"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Right"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e8211e7-9862-4a0b-a350-e8c5cddaa42c"",
+                    ""path"": ""<Keyboard>/leftArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7b3c997d-8723-483e-a293-ce46d0009d70"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QTE_Left"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""80a27db4-da0b-435a-9699-2242faabcabe"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ActivateBattleMap"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -238,21 +356,30 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     ],
     ""controlSchemes"": []
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_UpAttackInFight = m_Player.FindAction("UpAttackInFight", throwIfNotFound: true);
-        m_Player_DownAttackInFight = m_Player.FindAction("DownAttackInFight", throwIfNotFound: true);
-        m_Player_RightAttackInFight = m_Player.FindAction("RightAttackInFight", throwIfNotFound: true);
-        m_Player_LeftAttackInFight = m_Player.FindAction("LeftAttackInFight", throwIfNotFound: true);
-        m_Player_ConfirmAttack = m_Player.FindAction("ConfirmAttack", throwIfNotFound: true);
-        m_Player_AttackInputClear = m_Player.FindAction("AttackInputClear", throwIfNotFound: true);
-        m_Player_ExecuteSkillQuete = m_Player.FindAction("ExecuteSkillQuete", throwIfNotFound: true);
-        m_Player_InputOnOff = m_Player.FindAction("InputOnOff", throwIfNotFound: true);
+        // Overworld
+        m_Overworld = asset.FindActionMap("Overworld", throwIfNotFound: true);
+        // Battle
+        m_Battle = asset.FindActionMap("Battle", throwIfNotFound: true);
+        m_Battle_UpAttackInFight = m_Battle.FindAction("UpAttackInFight", throwIfNotFound: true);
+        m_Battle_DownAttackInFight = m_Battle.FindAction("DownAttackInFight", throwIfNotFound: true);
+        m_Battle_RightAttackInFight = m_Battle.FindAction("RightAttackInFight", throwIfNotFound: true);
+        m_Battle_LeftAttackInFight = m_Battle.FindAction("LeftAttackInFight", throwIfNotFound: true);
+        m_Battle_ConfirmAttack = m_Battle.FindAction("ConfirmAttack", throwIfNotFound: true);
+        m_Battle_AttackInputClear = m_Battle.FindAction("AttackInputClear", throwIfNotFound: true);
+        // QTE
+        m_QTE = asset.FindActionMap("QTE", throwIfNotFound: true);
+        m_QTE_QTE_Up = m_QTE.FindAction("QTE_Up", throwIfNotFound: true);
+        m_QTE_QTE_Down = m_QTE.FindAction("QTE_Down", throwIfNotFound: true);
+        m_QTE_QTE_Right = m_QTE.FindAction("QTE_Right", throwIfNotFound: true);
+        m_QTE_QTE_Left = m_QTE.FindAction("QTE_Left", throwIfNotFound: true);
+        m_QTE_ActivateBattleMap = m_QTE.FindAction("ActivateBattleMap", throwIfNotFound: true);
     }
 
     ~@InputActions()
     {
-        UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputActions.Player.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Overworld.enabled, "This will cause a leak and performance issues, InputActions.Overworld.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_Battle.enabled, "This will cause a leak and performance issues, InputActions.Battle.Disable() has not been called.");
+        UnityEngine.Debug.Assert(!m_QTE.enabled, "This will cause a leak and performance issues, InputActions.QTE.Disable() has not been called.");
     }
 
     public void Dispose()
@@ -311,38 +438,72 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_UpAttackInFight;
-    private readonly InputAction m_Player_DownAttackInFight;
-    private readonly InputAction m_Player_RightAttackInFight;
-    private readonly InputAction m_Player_LeftAttackInFight;
-    private readonly InputAction m_Player_ConfirmAttack;
-    private readonly InputAction m_Player_AttackInputClear;
-    private readonly InputAction m_Player_ExecuteSkillQuete;
-    private readonly InputAction m_Player_InputOnOff;
-    public struct PlayerActions
+    // Overworld
+    private readonly InputActionMap m_Overworld;
+    private List<IOverworldActions> m_OverworldActionsCallbackInterfaces = new List<IOverworldActions>();
+    public struct OverworldActions
     {
         private @InputActions m_Wrapper;
-        public PlayerActions(@InputActions wrapper) { m_Wrapper = wrapper; }
-        public InputAction @UpAttackInFight => m_Wrapper.m_Player_UpAttackInFight;
-        public InputAction @DownAttackInFight => m_Wrapper.m_Player_DownAttackInFight;
-        public InputAction @RightAttackInFight => m_Wrapper.m_Player_RightAttackInFight;
-        public InputAction @LeftAttackInFight => m_Wrapper.m_Player_LeftAttackInFight;
-        public InputAction @ConfirmAttack => m_Wrapper.m_Player_ConfirmAttack;
-        public InputAction @AttackInputClear => m_Wrapper.m_Player_AttackInputClear;
-        public InputAction @ExecuteSkillQuete => m_Wrapper.m_Player_ExecuteSkillQuete;
-        public InputAction @InputOnOff => m_Wrapper.m_Player_InputOnOff;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public OverworldActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputActionMap Get() { return m_Wrapper.m_Overworld; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(OverworldActions set) { return set.Get(); }
+        public void AddCallbacks(IOverworldActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_OverworldActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OverworldActionsCallbackInterfaces.Add(instance);
+        }
+
+        private void UnregisterCallbacks(IOverworldActions instance)
+        {
+        }
+
+        public void RemoveCallbacks(IOverworldActions instance)
+        {
+            if (m_Wrapper.m_OverworldActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOverworldActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OverworldActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OverworldActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OverworldActions @Overworld => new OverworldActions(this);
+
+    // Battle
+    private readonly InputActionMap m_Battle;
+    private List<IBattleActions> m_BattleActionsCallbackInterfaces = new List<IBattleActions>();
+    private readonly InputAction m_Battle_UpAttackInFight;
+    private readonly InputAction m_Battle_DownAttackInFight;
+    private readonly InputAction m_Battle_RightAttackInFight;
+    private readonly InputAction m_Battle_LeftAttackInFight;
+    private readonly InputAction m_Battle_ConfirmAttack;
+    private readonly InputAction m_Battle_AttackInputClear;
+    public struct BattleActions
+    {
+        private @InputActions m_Wrapper;
+        public BattleActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @UpAttackInFight => m_Wrapper.m_Battle_UpAttackInFight;
+        public InputAction @DownAttackInFight => m_Wrapper.m_Battle_DownAttackInFight;
+        public InputAction @RightAttackInFight => m_Wrapper.m_Battle_RightAttackInFight;
+        public InputAction @LeftAttackInFight => m_Wrapper.m_Battle_LeftAttackInFight;
+        public InputAction @ConfirmAttack => m_Wrapper.m_Battle_ConfirmAttack;
+        public InputAction @AttackInputClear => m_Wrapper.m_Battle_AttackInputClear;
+        public InputActionMap Get() { return m_Wrapper.m_Battle; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(BattleActions set) { return set.Get(); }
+        public void AddCallbacks(IBattleActions instance)
+        {
+            if (instance == null || m_Wrapper.m_BattleActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BattleActionsCallbackInterfaces.Add(instance);
             @UpAttackInFight.started += instance.OnUpAttackInFight;
             @UpAttackInFight.performed += instance.OnUpAttackInFight;
             @UpAttackInFight.canceled += instance.OnUpAttackInFight;
@@ -361,15 +522,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @AttackInputClear.started += instance.OnAttackInputClear;
             @AttackInputClear.performed += instance.OnAttackInputClear;
             @AttackInputClear.canceled += instance.OnAttackInputClear;
-            @ExecuteSkillQuete.started += instance.OnExecuteSkillQuete;
-            @ExecuteSkillQuete.performed += instance.OnExecuteSkillQuete;
-            @ExecuteSkillQuete.canceled += instance.OnExecuteSkillQuete;
-            @InputOnOff.started += instance.OnInputOnOff;
-            @InputOnOff.performed += instance.OnInputOnOff;
-            @InputOnOff.canceled += instance.OnInputOnOff;
         }
 
-        private void UnregisterCallbacks(IPlayerActions instance)
+        private void UnregisterCallbacks(IBattleActions instance)
         {
             @UpAttackInFight.started -= instance.OnUpAttackInFight;
             @UpAttackInFight.performed -= instance.OnUpAttackInFight;
@@ -389,30 +544,105 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @AttackInputClear.started -= instance.OnAttackInputClear;
             @AttackInputClear.performed -= instance.OnAttackInputClear;
             @AttackInputClear.canceled -= instance.OnAttackInputClear;
-            @ExecuteSkillQuete.started -= instance.OnExecuteSkillQuete;
-            @ExecuteSkillQuete.performed -= instance.OnExecuteSkillQuete;
-            @ExecuteSkillQuete.canceled -= instance.OnExecuteSkillQuete;
-            @InputOnOff.started -= instance.OnInputOnOff;
-            @InputOnOff.performed -= instance.OnInputOnOff;
-            @InputOnOff.canceled -= instance.OnInputOnOff;
         }
 
-        public void RemoveCallbacks(IPlayerActions instance)
+        public void RemoveCallbacks(IBattleActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_BattleActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerActions instance)
+        public void SetCallbacks(IBattleActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_BattleActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_BattleActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
-    public interface IPlayerActions
+    public BattleActions @Battle => new BattleActions(this);
+
+    // QTE
+    private readonly InputActionMap m_QTE;
+    private List<IQTEActions> m_QTEActionsCallbackInterfaces = new List<IQTEActions>();
+    private readonly InputAction m_QTE_QTE_Up;
+    private readonly InputAction m_QTE_QTE_Down;
+    private readonly InputAction m_QTE_QTE_Right;
+    private readonly InputAction m_QTE_QTE_Left;
+    private readonly InputAction m_QTE_ActivateBattleMap;
+    public struct QTEActions
+    {
+        private @InputActions m_Wrapper;
+        public QTEActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @QTE_Up => m_Wrapper.m_QTE_QTE_Up;
+        public InputAction @QTE_Down => m_Wrapper.m_QTE_QTE_Down;
+        public InputAction @QTE_Right => m_Wrapper.m_QTE_QTE_Right;
+        public InputAction @QTE_Left => m_Wrapper.m_QTE_QTE_Left;
+        public InputAction @ActivateBattleMap => m_Wrapper.m_QTE_ActivateBattleMap;
+        public InputActionMap Get() { return m_Wrapper.m_QTE; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(QTEActions set) { return set.Get(); }
+        public void AddCallbacks(IQTEActions instance)
+        {
+            if (instance == null || m_Wrapper.m_QTEActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_QTEActionsCallbackInterfaces.Add(instance);
+            @QTE_Up.started += instance.OnQTE_Up;
+            @QTE_Up.performed += instance.OnQTE_Up;
+            @QTE_Up.canceled += instance.OnQTE_Up;
+            @QTE_Down.started += instance.OnQTE_Down;
+            @QTE_Down.performed += instance.OnQTE_Down;
+            @QTE_Down.canceled += instance.OnQTE_Down;
+            @QTE_Right.started += instance.OnQTE_Right;
+            @QTE_Right.performed += instance.OnQTE_Right;
+            @QTE_Right.canceled += instance.OnQTE_Right;
+            @QTE_Left.started += instance.OnQTE_Left;
+            @QTE_Left.performed += instance.OnQTE_Left;
+            @QTE_Left.canceled += instance.OnQTE_Left;
+            @ActivateBattleMap.started += instance.OnActivateBattleMap;
+            @ActivateBattleMap.performed += instance.OnActivateBattleMap;
+            @ActivateBattleMap.canceled += instance.OnActivateBattleMap;
+        }
+
+        private void UnregisterCallbacks(IQTEActions instance)
+        {
+            @QTE_Up.started -= instance.OnQTE_Up;
+            @QTE_Up.performed -= instance.OnQTE_Up;
+            @QTE_Up.canceled -= instance.OnQTE_Up;
+            @QTE_Down.started -= instance.OnQTE_Down;
+            @QTE_Down.performed -= instance.OnQTE_Down;
+            @QTE_Down.canceled -= instance.OnQTE_Down;
+            @QTE_Right.started -= instance.OnQTE_Right;
+            @QTE_Right.performed -= instance.OnQTE_Right;
+            @QTE_Right.canceled -= instance.OnQTE_Right;
+            @QTE_Left.started -= instance.OnQTE_Left;
+            @QTE_Left.performed -= instance.OnQTE_Left;
+            @QTE_Left.canceled -= instance.OnQTE_Left;
+            @ActivateBattleMap.started -= instance.OnActivateBattleMap;
+            @ActivateBattleMap.performed -= instance.OnActivateBattleMap;
+            @ActivateBattleMap.canceled -= instance.OnActivateBattleMap;
+        }
+
+        public void RemoveCallbacks(IQTEActions instance)
+        {
+            if (m_Wrapper.m_QTEActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IQTEActions instance)
+        {
+            foreach (var item in m_Wrapper.m_QTEActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_QTEActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public QTEActions @QTE => new QTEActions(this);
+    public interface IOverworldActions
+    {
+    }
+    public interface IBattleActions
     {
         void OnUpAttackInFight(InputAction.CallbackContext context);
         void OnDownAttackInFight(InputAction.CallbackContext context);
@@ -420,7 +650,13 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnLeftAttackInFight(InputAction.CallbackContext context);
         void OnConfirmAttack(InputAction.CallbackContext context);
         void OnAttackInputClear(InputAction.CallbackContext context);
-        void OnExecuteSkillQuete(InputAction.CallbackContext context);
-        void OnInputOnOff(InputAction.CallbackContext context);
+    }
+    public interface IQTEActions
+    {
+        void OnQTE_Up(InputAction.CallbackContext context);
+        void OnQTE_Down(InputAction.CallbackContext context);
+        void OnQTE_Right(InputAction.CallbackContext context);
+        void OnQTE_Left(InputAction.CallbackContext context);
+        void OnActivateBattleMap(InputAction.CallbackContext context);
     }
 }

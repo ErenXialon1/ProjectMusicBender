@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
+
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-using DG.Tweening;
+
 
 
 [RequireComponent(typeof(PlayerInput))] // Ensure that PlayerInput is attached
@@ -69,6 +69,40 @@ public class Player : MonoBehaviour
 
         InitializeDefaultSkills();
         InitializeDefaultDirectionSprites();
+        
+    }
+   
+    private void OnDisable()
+    {
+        UnsubscribeInputEvents();
+    }
+    public void UnsubscribeInputEvents()
+    {
+        playerInput.actions["UpAttackInFight"].performed -= ctx => AddInput("W"); 
+        playerInput.actions["DownAttackInFight"].performed -= ctx => AddInput("S"); 
+        playerInput.actions["LeftAttackInFight"].performed -= ctx => AddInput("A"); 
+        playerInput.actions["RightAttackInFight"].performed -= ctx => AddInput("D"); 
+        playerInput.actions["ConfirmAttack"].performed -= ctx => ConfirmInputCombination();
+        
+        playerInput.actions["AttackInputClear"].performed -= ctx => ClearInputSequence();
+        
+
+    }
+    
+    public IEnumerator SubscribeInputEvents()
+    {
+        yield return new WaitForEndOfFrame(); // Wait for one frame
+        yield return new WaitForEndOfFrame();
+        
+
+        // Input event subscriptions
+        playerInput.actions["UpAttackInFight"].performed += ctx => AddInput("W"); 
+        playerInput.actions["DownAttackInFight"].performed += ctx => AddInput("S"); 
+        playerInput.actions["LeftAttackInFight"].performed += ctx => AddInput("A"); 
+        playerInput.actions["RightAttackInFight"].performed += ctx => AddInput("D");
+        playerInput.actions["ConfirmAttack"].performed += ctx =>ConfirmInputCombination();
+        playerInput.actions["AttackInputClear"].performed += ctx =>ClearInputSequence();
+        
     }
     private void InitializeSkillAddress(string skillAddress)
     {
@@ -110,7 +144,7 @@ public class Player : MonoBehaviour
                 if (!skillAlreadyExists)
                 {
                     availableSkills.Add(skill);
-                    Debug.Log($"Loaded and added skill: {skill.skillName}");
+                    
                 }
                 else
                 {
@@ -185,47 +219,55 @@ public class Player : MonoBehaviour
     }
    
 
-    // Input callbacks from Unity's Input System
-    public void OnAttackUp(InputAction.CallbackContext context)
-    {
-        if (context.performed) AddInput("W");
-    }
+    
 
-    public void OnAttackDown(InputAction.CallbackContext context)
-    {
-        if (context.performed) AddInput("S");
-    }
+    
 
-    public void OnAttackLeft(InputAction.CallbackContext context)
-    {
-        if (context.performed) AddInput("A");
-    }
+    #endregion
+    #region Turn Management
 
-    public void OnAttackRight(InputAction.CallbackContext context)
+    /// <summary>
+    /// Finalizes the player's turn by confirming any remaining inputs.
+    /// </summary>
+    public void FinalizeTurn()
     {
-        if (context.performed) AddInput("D");
+        if (recentInputs.Count > 0)
+        {
+            
+            // Automatically confirm the current combination if there are unconfirmed inputs
+            ConfirmInputCombination();
+            ClearInputSequence();
+        }
+
+        
+
+        // Clear recent inputs and reset UI
+        
     }
 
     #endregion
-
     #region Skill Management
 
     /// <summary>
     /// Confirms the current input combination as a skill if it is available and queues it up.
     /// </summary>
-    public void ConfirmInputCombination(InputAction.CallbackContext context)
+    public void ConfirmInputCombination()
     {
-        if (!context.performed) return; // Exit if the action wasn't fully performed
+        
+        
+        
+        if (recentInputs.Count == 0) return;
+        
 
         string combination = string.Join("", recentInputs);
 
         // Check if the confirmed combination matches any available skill
         SkillData confirmedSkill = availableSkills.Find(skill => skill.combination == combination);
+        ClearInputSequence();
 
         if (confirmedSkill != null)
         {
-            // Clear recent inputs after confirming
-            ClearInputSequence(context);
+            
             
 
             // Add the confirmed skill to the queue
@@ -243,12 +285,7 @@ public class Player : MonoBehaviour
                 StartCoroutine(ProcessSkillQueue());
             }
         }
-        else
-        {
-            // Clear the UI and recent inputs if the combination is not recognized
-            ClearInputSequence(context);
-            
-        }
+        
     }
     /// <summary>
     /// Coroutine to process and execute queued skills in order.
@@ -277,13 +314,12 @@ public class Player : MonoBehaviour
     /// <summary>
     /// Clears the recent input list.
     /// </summary>
-    public void ClearInputSequence(InputAction.CallbackContext context)
+    public void ClearInputSequence()
     {
-        if (context.performed)
-        {
+        
             recentInputs.Clear();
             uiManager.ClearRecentInputUI();
-        }
+        
     }
 
 

@@ -2,7 +2,13 @@
     "name": "InputActions",
     "maps": [
         {
-            "name": "Player",
+            "name": "Overworld",
+            "id": "aa63ed85-c902-4ab5-a7fc-7b6f37d6b203",
+            "actions": [],
+            "bindings": []
+        },
+        {
+            "name": "Battle",
             "id": "ccd568b7-1762-4b86-acf0-af076c8833be",
             "actions": [
                 {
@@ -54,24 +60,6 @@
                     "name": "AttackInputClear",
                     "type": "Button",
                     "id": "2e0678b4-9e02-44fc-b677-7da3e614716b",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "ExecuteSkillQuete",
-                    "type": "Button",
-                    "id": "7dbecadf-2f69-47f3-a94d-eb63ef4426f6",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "InputOnOff",
-                    "type": "Button",
-                    "id": "e2cd775a-d536-4388-bd7e-e9f3e4176739",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -188,26 +176,156 @@
                     "action": "AttackInputClear",
                     "isComposite": false,
                     "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "QTE",
+            "id": "f863ca7d-1f4c-4ade-98a2-a66c52776267",
+            "actions": [
+                {
+                    "name": "QTE_Up",
+                    "type": "Button",
+                    "id": "aa7aa1f6-38f2-44ca-a82d-44f90625ac88",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 },
                 {
+                    "name": "QTE_Down",
+                    "type": "Button",
+                    "id": "3fefb3cf-a716-4b77-b4f3-d0c60e8bb679",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QTE_Right",
+                    "type": "Button",
+                    "id": "60ff812a-4e0e-4e78-b026-aee269e6c732",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QTE_Left",
+                    "type": "Button",
+                    "id": "dc6d09cd-b7e6-433f-babd-40106549654b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ActivateBattleMap",
+                    "type": "Button",
+                    "id": "6f107936-bf9a-410c-8b61-b73b3022669b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
                     "name": "",
-                    "id": "d99b455e-6107-4a4b-8e73-981598de60ac",
-                    "path": "<Keyboard>/f",
+                    "id": "098eb13c-c9f0-4c08-9681-4409f5a5c1a1",
+                    "path": "<Keyboard>/upArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "ExecuteSkillQuete",
+                    "action": "QTE_Up",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "99196ab0-e66a-462a-aa14-4664d8b30e17",
-                    "path": "<Keyboard>/e",
+                    "id": "0540f06d-58ef-46ae-9844-a3f65ff11403",
+                    "path": "<Keyboard>/w",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "InputOnOff",
+                    "action": "QTE_Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c46234c0-5f63-409d-942a-0fcfb365ea9b",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5ce4e5e8-be95-4945-9073-9bc23c7bdf7b",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8403ddd-5088-4131-8bbb-785f06715c4a",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "968488dc-1f24-49d1-b3a1-bda72c89474d",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Right",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8e8211e7-9862-4a0b-a350-e8c5cddaa42c",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7b3c997d-8723-483e-a293-ce46d0009d70",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QTE_Left",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "80a27db4-da0b-435a-9699-2242faabcabe",
+                    "path": "<Keyboard>/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ActivateBattleMap",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
