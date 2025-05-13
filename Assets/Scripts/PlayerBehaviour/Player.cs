@@ -6,12 +6,14 @@ using UnityEngine.InputSystem;
 
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using DG.Tweening;
 
 
 
 [RequireComponent(typeof(PlayerInput))] // Ensure that PlayerInput is attached
 public class Player : MonoBehaviour
 {
+    
     // Player's base stats
     [Header("Player Stats")]
     [Tooltip("Current HP of the player")]
@@ -21,7 +23,9 @@ public class Player : MonoBehaviour
     public int playerInputCap = 4; // Default input cap, can increase later
     [Header("Addressable Skill References")]
     public List<string> skillAddresses; // List of addresses for ScriptableObjects
-
+    [SerializeField] private PlayerStatSheet statSheet; // Player’s stat sheet
+      // Player’s StatSheet for managing stats and health
+    
     // Input System Reference
     [Header("Input System")]
     [Tooltip("Reference to the PlayerInput component used for handling player controls")]
@@ -35,8 +39,11 @@ public class Player : MonoBehaviour
     [Tooltip("Confirmed skills to show in UI")]
     public List<SkillData> confirmedCombinations = new List<SkillData>(); // Confirmed skills to show in UI
 
-    [Tooltip("Skills that are queued to execute")]
-    public List<SkillData> skillsWaitingForExecute = new List<SkillData>(); // Skills that are queued to execute
+    // Input Data
+    [Header("Input Data")]
+    private Queue<List<string>> playerQueue = new Queue<List<string>>(); // Queue of chains for the turn
+    private List<string> currentChain = new List<string>(); // Temporarily holds the ongoing chain
+    //private bool isChaining = false; // Tracks whether the player is chaining combinations(OLD SYSTEM)
 
     // References
     [Header("Skill and Attack Settings")]
@@ -54,20 +61,28 @@ public class Player : MonoBehaviour
     [Header("UI and Display")]
     [SerializeField, Tooltip("Reference to the PlayerUIManager script that handles the UI for displaying inputs")]
     private PlayerUIManager uiManager;
+    private RuneRock currentRuneRock; // Holds the active RuneRock
+    [SerializeField]private PlayerTurnHandler playerTurnHandler;
+
 
     void Start()
     {
+        
         // Fetch and set up PlayerInput component
         playerInput = GetComponent<PlayerInput>();
+        statSheet = GetComponent<PlayerStatSheet>(); // Ensure this component is attached
         
-
+        if (statSheet == null)
+        {
+            Debug.LogWarning("StatSheet component not found on Player. Please add StatSheet to the Player object.");
+        }
         // Attempt to find the PlayerUIManager GameObject by name
         if (uiManager == null)
         {
             Debug.LogWarning("PlayerUIManager script reference not set. Please assign it in the Inspector.");
         }
 
-        InitializeDefaultSkills();
+        
         InitializeDefaultDirectionSprites();
         
     }
@@ -83,9 +98,9 @@ public class Player : MonoBehaviour
         playerInput.actions["LeftAttackInFight"].performed -= ctx => AddInput("A"); 
         playerInput.actions["RightAttackInFight"].performed -= ctx => AddInput("D"); 
         playerInput.actions["ConfirmAttack"].performed -= ctx => ConfirmInputCombination();
-        
         playerInput.actions["AttackInputClear"].performed -= ctx => ClearInputSequence();
-        
+        //playerInput.actions["ChainAttack"].performed -= ctx => ChainInputCombination();
+
 
     }
     
@@ -102,9 +117,10 @@ public class Player : MonoBehaviour
         playerInput.actions["RightAttackInFight"].performed += ctx => AddInput("D");
         playerInput.actions["ConfirmAttack"].performed += ctx =>ConfirmInputCombination();
         playerInput.actions["AttackInputClear"].performed += ctx =>ClearInputSequence();
-        
+        //playerInput.actions["ChainAttack"].performed += ctx => ChainInputCombination();
+
     }
-    private void InitializeSkillAddress(string skillAddress)
+    /*private void InitializeSkillAddress(string skillAddress)
     {
         // Assign the address strings based on your Addressable settings
         if (!skillAddresses.Contains(skillAddress)) // Ensure no duplicates in the list
@@ -112,51 +128,14 @@ public class Player : MonoBehaviour
             skillAddresses.Add(skillAddress);   // These should match the addresses you assigned in the Addressables window
         }
 
-    }
-
-    /// <summary>
-    /// Loads all skills from Addressables based on their addresses.
-    /// </summary>
-    private void LoadSkill(string address)
+    }*/
+    public void ResetAvailableSkillList()
     {
-        if (string.IsNullOrEmpty(address) || availableSkills.Any(skill => skill.skillAddress == address))
-        {
-            Debug.LogWarning($"Skill at {address} already loaded or address is empty.");
-            return;
-        }
-
-        Addressables.LoadAssetAsync<SkillData>(address).Completed += handle => OnSkillLoaded(handle, address);
+        availableSkills.Clear();
     }
 
-    /// <summary>
-    /// Called when a SkillData ScriptableObject is loaded.
-    /// </summary>
-    private void OnSkillLoaded(AsyncOperationHandle<SkillData> handle, string address)
-    {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            SkillData skill = handle.Result;
-            if (skill != null)
-            {
-                // Check if the skill is already in the availableSkills list to avoid duplicates
-                bool skillAlreadyExists = availableSkills.Exists(s => s.skillName == skill.skillName);
+    
 
-                if (!skillAlreadyExists)
-                {
-                    availableSkills.Add(skill);
-                    
-                }
-                else
-                {
-                    Debug.Log($"Skill {skill.skillName} already exists in availableSkills. Skipping.");
-                }
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"Failed to load skill from Addressable Assets at address: {address}");
-        }
-    }
     private void InitializeDefaultDirectionSprites()
     {
         directionSprites = directionSprites ?? new Dictionary<string, Sprite>
@@ -179,29 +158,7 @@ public class Player : MonoBehaviour
         return sprite;
     }
 
-    /// <summary>
-    /// Initializes default skills that are available to the player at the start.
-    /// </summary>
-    private void InitializeDefaultSkills()
-    {
-        List<string> defaultSkills = new List<string>
-    {
-        "Skills/SingleInput/BasicAttack_W",
-        "Skills/SingleInput/BasicAttack_A",
-        "Skills/SingleInput/BasicAttack_S",
-        "Skills/SingleInput/BasicAttack_D",
-        "Skills/DoubleInput/DoubleInput_WA"
-    };
-
-        foreach (var skillAddress in defaultSkills)
-        {
-            if (!skillAddresses.Contains(skillAddress))
-            {
-                skillAddresses.Add(skillAddress);
-                LoadSkill(skillAddress);
-            }
-        }
-    }
+   
 
 
     #region Input Handling
@@ -213,7 +170,12 @@ public class Player : MonoBehaviour
     {
         if (recentInputs.Count < playerInputCap)
         {
+            
+
+           
             recentInputs.Add(direction);
+            Vector3 directionVector = GetDirectionVector(direction);
+            currentRuneRock.AddEngravePoint(directionVector, 0.2f);
             uiManager.UpdateRecentInputUI(recentInputs, directionSprites);
         }
     }
@@ -234,14 +196,13 @@ public class Player : MonoBehaviour
         if (recentInputs.Count > 0)
         {
             
-            // Automatically confirm the current combination if there are unconfirmed inputs
-            ConfirmInputCombination();
-            ClearInputSequence();
+            
+            ConfirmInputCombination();// Automatically confirm the current combination if there are unconfirmed inputs
+
         }
 
         
 
-        // Clear recent inputs and reset UI
         
     }
 
@@ -253,64 +214,37 @@ public class Player : MonoBehaviour
     /// </summary>
     public void ConfirmInputCombination()
     {
-        
-        
-        
         if (recentInputs.Count == 0) return;
-        
 
         string combination = string.Join("", recentInputs);
+        // Add as a standalone chain
+        currentChain.Add(combination);
+        playerQueue.Enqueue(new List<string>(currentChain)); // Enqueue a copy of the chain
+        currentChain.Clear(); // Reset for the next combination
 
-        // Check if the confirmed combination matches any available skill
-        SkillData confirmedSkill = availableSkills.Find(skill => skill.combination == combination);
         ClearInputSequence();
-
-        if (confirmedSkill != null)
-        {
-            
-            
-
-            // Add the confirmed skill to the queue
-            skillsWaitingForExecute.Add(confirmedSkill);
-
-
-
-            // Add the newly confirmed skill to the list
-            confirmedCombinations.Add(confirmedSkill);
-            uiManager.UpdateConfirmedSkillsUI(confirmedCombinations);
-
-            // Start executing the queued skills if not already executing
-            if (!isExecutingSkills)
-            {
-                StartCoroutine(ProcessSkillQueue());
-            }
-        }
         
     }
-    /// <summary>
-    /// Coroutine to process and execute queued skills in order.
-    /// </summary>
-    private IEnumerator ProcessSkillQueue()
+    public Queue<List<string>> GetPlayerQueue()
     {
-        if (isExecutingSkills) yield break;
-        isExecutingSkills = true;
-
-        while (skillsWaitingForExecute.Count > 0)
-        {
-            // Get the next skill from the queue
-            SkillData currentSkill = skillsWaitingForExecute.First();
-            skillsWaitingForExecute.RemoveAt(0);
-
-
-
-            // Example delay to simulate execution (replace with actual execution logic)
-            // yield return new WaitForSeconds(1f);
-            yield return ExecuteSkillCoroutine(currentSkill);
-            // After finishing the current skill, continue to the next one if available
-        }
-
-        isExecutingSkills = false;
+        return new Queue<List<string>>(playerQueue); // Return a copy of the queue
     }
+
+   /* 
+    * OLD CHAINING SYSTEM
+    * public void ChainInputCombination()
+    {
+        if (recentInputs.Count == 0) return;
+
+        // Add the current combination to the chain
+        string combination = string.Join("", recentInputs);
+        currentChain.Add(combination);
+
+        ClearInputSequence();
+        isChaining = true; // Stay in chaining mode
+    }
+   
+    */
     /// <summary>
     /// Clears the recent input list.
     /// </summary>
@@ -321,46 +255,23 @@ public class Player : MonoBehaviour
             uiManager.ClearRecentInputUI();
         
     }
-
-
-    #endregion
-
-    #region Skill Execution
-
-    /// <summary>
-    /// Coroutine to execute all queued skills with a delay between each.
-    /// </summary>
-
-    private IEnumerator ExecuteSkillCoroutine(SkillData skill)
+    public void ClearCombinationQueue()
     {
-        float skillAnimationLength;
-        if (skill.skillAnimation != null)
-        {
-            skillAnimationLength = skill.skillAnimation.clip.length;
-        }
-        else
-        {
-            CustomLogger.Log("Skill animation isn't assigned, applying default animation length which is 1");
-            skillAnimationLength = 1f; 
-        }
-        // Instantiate or play the skill's effect/animation
-        Debug.Log($"Executing skill: {skill.skillName}");
-        // Example: Play animation or instantiate effect here, based on your game's design
-        // yield return new WaitForSeconds(skill.animationDuration); // Adjust based on your skill's effect
-        // After skill execution, initiate a delay before removing the skill from the UI
-        StartCoroutine(uiManager.RemoveExecutedSkillFromUI(skill));
-        yield return new WaitForSeconds(skillAnimationLength); // Example delay
-
-
-
-
+        playerQueue.Clear();
+        currentChain.Clear();
+        
+        
     }
-    
 
     #endregion
+
+
 
     #region Helper Methods
-
+    public SkillData GetSkillByCombination(string combination)
+    {
+        return availableSkills.Find(skill => skill.combination == combination);
+    }
     /// <summary>
     /// Finds the closest enemy to the player.
     /// </summary>
@@ -368,8 +279,8 @@ public class Player : MonoBehaviour
     private Transform FindClosestEnemy()
     {
         // Get all active EnemyHealth components in the scene
-        List<EnemyHealth> enemies = new List<EnemyHealth>(
-            GameObject.FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None)
+        List<EnemyStatSheet> enemies = new List<EnemyStatSheet>(
+            GameObject.FindObjectsByType<EnemyStatSheet>(FindObjectsSortMode.None)
         );
 
         if (enemies.Count == 0) return null;
@@ -389,6 +300,19 @@ public class Player : MonoBehaviour
 
         return closestEnemy;
     }
+    private Vector3 GetDirectionVector(string input)
+    {
+        // Convert input string to a direction vector
+        return input switch
+        {
+            "W" => Vector3.up,
+            "A" => Vector3.left,
+            "S" => Vector3.down,
+            "D" => Vector3.right,
+            _ => Vector3.zero
+        };
+    }
+
 
     #endregion
 }

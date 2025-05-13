@@ -155,7 +155,7 @@ namespace TMPro.Examples
                     if (mouseY > 0.01f || mouseY < -0.01f)
                     {
                         ElevationAngle -= mouseY * MoveSensitivity;
-                        // Limit Elevation angle between min & max values.
+                        // Limit Elevation angle between min & max calculatedValues.
                         ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
                     }
 
@@ -178,7 +178,7 @@ namespace TMPro.Examples
                     if (deltaPosition.y > 0.01f || deltaPosition.y < -0.01f)
                     {
                         ElevationAngle -= deltaPosition.y * 0.1f;
-                        // Limit Elevation angle between min & max values.
+                        // Limit Elevation angle between min & max calculatedValues.
                         ElevationAngle = Mathf.Clamp(ElevationAngle, MinElevationAngle, MaxElevationAngle);
                     }
 
@@ -270,7 +270,7 @@ namespace TMPro.Examples
                 if (zoomDelta > 0.01f || zoomDelta < -0.01f)
                 {
                     FollowDistance += zoomDelta * 0.25f;
-                    // Limit FollowDistance between min & max values.
+                    // Limit FollowDistance between min & max calculatedValues.
                     FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
                 }
 
@@ -282,7 +282,7 @@ namespace TMPro.Examples
             {
 
                 FollowDistance -= mouseWheel * 5.0f;
-                // Limit FollowDistance between min & max values.
+                // Limit FollowDistance between min & max calculatedValues.
                 FollowDistance = Mathf.Clamp(FollowDistance, MinFollowDistance, MaxFollowDistance);
             }
 

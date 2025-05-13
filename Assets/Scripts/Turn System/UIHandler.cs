@@ -22,7 +22,7 @@ public class UIHandler : MonoBehaviour
     [Header("Turn Settings")]
     [SerializeField] PlayerTurnHandler playerTurnHandler;
     [SerializeField] EnemyTurnHandler enemyTurnHandler;
-    [SerializeField] QTEHandler qteHandler;
+    
 
     
     
@@ -36,6 +36,10 @@ public class UIHandler : MonoBehaviour
         if (turnText.text != text || turnText.color.a == 0)
         {
             turnText.text = text;
+            if(text == playerTurnHandler.turnText)
+            {
+                UpdateTimer(playerTurnHandler.turnDuration);
+            }
             turnText.DOFade(1, turnTextFadeDuration).OnComplete(() =>
             {
                 turnText.DOFade(0, turnTextFadeDuration).SetDelay(1.0f).OnComplete(() =>
@@ -44,9 +48,9 @@ public class UIHandler : MonoBehaviour
                     
                     if(text == playerTurnHandler.turnText)
                     {
-                        
-                        qteHandler.hasHandledInitialInput = false;
-                        UpdateTimer(playerTurnHandler.turnDuration);
+
+
+                        playerTurnHandler.canStartTurn = true;
                     }
                     if(text == enemyTurnHandler.turnText)
                     {

@@ -64,6 +64,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "ChainAttack",
+                    "type": "Button",
+                    "id": "d0e7da83-d2aa-47c1-80ca-0007b442ac9e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -169,11 +178,22 @@
                 {
                     "name": "",
                     "id": "4e827931-ed02-4671-937b-e3176844c429",
-                    "path": "<Keyboard>/leftShift",
+                    "path": "<Keyboard>/leftCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "AttackInputClear",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2e9f8277-c59c-4db0-8cad-4b641cce0c0a",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChainAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

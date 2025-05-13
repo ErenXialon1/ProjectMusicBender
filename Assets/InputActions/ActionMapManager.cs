@@ -7,7 +7,6 @@ public class ActionMapManager : MonoBehaviour
     public static ActionMapManager Instance { get; private set; }
     [SerializeField] PlayerInput playerInput;
     [SerializeField] Player playerScript;
-    [SerializeField] QTEHandler qteHandler;
     [SerializeField] PlayerTurnHandler playerTurnHandler;
 
     private void Awake()
@@ -56,7 +55,6 @@ public class ActionMapManager : MonoBehaviour
             playerScript.UnsubscribeInputEvents(); // Unsubscribe battle events
         
         
-            qteHandler.UnsubscribeQTEInputEvents(); // Unsubscribe QTE events
         
         
             //TO DO unsubscribe overworld action map
@@ -69,10 +67,7 @@ public class ActionMapManager : MonoBehaviour
         {
             StartCoroutine(playerScript.SubscribeInputEvents()); // Unsubscribe battle events
         }
-        else if (playerInput.currentActionMap.name == "QTE")
-        {
-            StartCoroutine(qteHandler.SubscribeQTEInputEvents());// Unsubscribe QTE events
-        }
+       
         else if(playerInput.currentActionMap.name == "Overworld")
         {
             //TO DO subscribe overworld action map

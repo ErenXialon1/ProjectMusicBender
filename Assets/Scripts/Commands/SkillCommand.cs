@@ -7,7 +7,7 @@ public class SkillCommand : ICommand
     [Tooltip("Prefab of the skill to be executed.")]
     private GameObject skillPrefab;
 
-    [Tooltip("Amount of damage the skill inflicts.")]
+    [Tooltip("Amount of effectValueName the skill inflicts.")]
     private float damageAmount;
 
     [Tooltip("The target enemy of the skill.")]
@@ -19,7 +19,7 @@ public class SkillCommand : ICommand
     /// Initializes a new instance of the SkillCommand class with specified parameters.
     /// </summary>
     /// <param name="skill">The skill prefab to be used.</param>
-    /// <param name="damage">The damage amount dealt by the skill.</param>
+    /// <param name="damage">The effectValueName amount dealt by the skill.</param>
     /// <param name="enemyTarget">The target of the skill.</param>
     public SkillCommand(GameObject skill, float damage, Transform enemyTarget)
     {
@@ -33,7 +33,7 @@ public class SkillCommand : ICommand
     #region Command Execution
 
     /// <summary>
-    /// Executes the skill command by spawning the skill prefab and applying damage to the target.
+    /// Executes the skill command by spawning the skill prefab and applying effectValueName to the target.
     /// </summary>
     public void Execute()
     {
@@ -43,8 +43,8 @@ public class SkillCommand : ICommand
         var skillInstance = GameObjectPool.Instance.GetFromPool(skillPrefab);
         skillInstance.transform.position = target.position; // Set to target position or desired location
 
-        // Apply damage if target has a HealthComponent
-        var healthComponent = target.GetComponent<HealthComponent>();
+        // Apply effectValueName if target has a HealthComponent
+        var healthComponent = target.GetComponent<StatSheet>();
         if (healthComponent != null)
         {
             healthComponent.TakeDamage(damageAmount);

@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: BasicAttack_W
   combination: W
-  damage: 5
+  description: 
+  effectType: 0
+  baseValue: 100
+  scalingFactors:
+  - statName: ATK
+    multiplier: 100
+  modifiers: []
   skillAnimation: {fileID: 0}
   skillAnimationTime: 1
   skillPrefab: {fileID: 2140829892611404321, guid: af0e664a24730794f9fbd78758eabb7d, type: 3}

@@ -15,6 +15,31 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: 492bf2c569e384946be65d4664e259d3
   m_SerializeEntries:
+  - m_GUID: 0ace3a8a6b1c23e4c8815bfd691b95cf
+    m_Address: Skills/DoubleInput/DoubleInput_DS
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2ca57401f62d6574590f059693826ee7
+    m_Address: Assets/Scripts/SO/StatSystem/Stats
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2eb02e7c1c21ff4429917dc475c47936
+    m_Address: StatSystem/Stats/SPDStatPlayer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 768db61d79666904fb8e933d6aeec857
+    m_Address: Skills/DoubleInput/DoubleInput_SW
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 93018298bf71de345b36a2ca1d7e7479
+    m_Address: StatSystem/Stats/DEFStat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9e4dbcd4cd458f2458490dad067cd509
     m_Address: Assets/Sprites
     m_ReadOnly: 0
@@ -25,6 +50,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b5475ea5b4957714aac562ff691a5dab
+    m_Address: StatSystem/Stats/SPDStatEnemy
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5a8bd919c829fa43bd9ee20b1f28ba6
+    m_Address: Assets/Scripts/SO/StatSystem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb20ef49d8795ae4a83d3a3ff31489ba
     m_Address: Assets/Scripts/SO/SingleInput
     m_ReadOnly: 0
@@ -32,6 +67,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: eb2deb7c7b46ad24a824eef95d5866aa
     m_Address: Assets/Sprites/UI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec428199048209141b37adb02339117a
+    m_Address: Assets/Scripts/SO/StatSystem/Modifiers
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ef0c00bb06dd8444fa308b4b9aab755c
+    m_Address: Skills/DoubleInput/DoubleInput_SA
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: efb5c1fa1f4a90640bfebba611f85d2d
+    m_Address: StatSystem/Stats/VIGORStat
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

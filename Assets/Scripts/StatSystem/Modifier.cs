@@ -1,52 +1,42 @@
 using System;
-
-public enum ModifierType
-{
-    Percentage,
-    BaseValueModifier,
-    Additive
-}
+using UnityEngine;
 
 [System.Serializable]
 public class Modifier
 {
-    // modifierType of modifier (Percentage, BaseValueModifier, Additive)
-    public ModifierType modifierType { get; private set; }
+    public ModifierDefinition modifierDefinition;  // Reference to the ModifierDefinition
 
-    // The value to be applied by this modifier
-    public float modifierValue { get; private set; }
+    public object modifierSource;      // Optional source for tracking origin (e.g., item, skill, effect)
 
-    // Optional source for tracking where this modifier comes from (e.g., item, skill, effect)
-    public object modifierSource { get; private set; }
-
-    // Constructor to initialize a modifier with type, value, and optional source
-    public Modifier(ModifierType type, float value, object source = null)
+    // Constructor to initialize a modifier with its definition and optional source
+    public Modifier(ModifierDefinition definition, object source = null)
     {
-        modifierType = type;
-        modifierValue = value;
+        modifierDefinition = definition ?? throw new ArgumentNullException(nameof(definition));
         modifierSource = source;
     }
 
     /// <summary>
-    /// Applies this modifier to a given base value, based on its type.
+    /// Applies this modifier to a given base value based on its type.
     /// </summary>
-    /// <param name="baseValue">The original value of the stat before any modifications.</param>
-    /// <returns>The modified value after applying this modifier.</returns>
-    public float ApplyModifier(float baseValue)
+    public float Apply(float baseValue)
     {
-        switch (modifierType)
+        switch (modifierDefinition.modifierType)
         {
             case ModifierType.Percentage:
-                return baseValue * (1 + modifierValue / 100);
-
+                return baseValue * (1 + modifierDefinition.modifierValue / 100f);
             case ModifierType.BaseValueModifier:
-                return baseValue + modifierValue;
-
-            case ModifierType.Additive:
-                return modifierValue;
-
+                return baseValue + modifierDefinition.modifierValue;
+            
             default:
                 throw new ArgumentOutOfRangeException();
         }
+    }
+
+    /// <summary>
+    /// Log details for debugging the modifier.
+    /// </summary>
+    public void LogModifierDetails()
+    {
+        Debug.Log($"Modifier Type: {modifierDefinition.modifierType}, Value: {modifierDefinition.modifierValue}, Source: {modifierSource}");
     }
 }

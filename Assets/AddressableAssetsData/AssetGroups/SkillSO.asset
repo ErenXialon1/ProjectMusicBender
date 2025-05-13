@@ -16,7 +16,7 @@ MonoBehaviour:
   m_GUID: c3cb6d13bf0a893469d8b6a2f06fcfe1
   m_SerializeEntries:
   - m_GUID: 02485ae3cd7c55940bb94adf8dddc2c9
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill3.asset
+    m_Address: Skills/DoubleInput/DoubleInput_WS
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -31,12 +31,12 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 24d00cb70d92d1d47b89933024da2627
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill10.asset
+    m_Address: Skills/DoubleInput/DoubleInput_SS
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 303952ca92c9ca34eba53aad2d8d34af
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill6.asset
+    m_Address: Skills/DoubleInput/DoubleInput_AS
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
@@ -51,32 +51,32 @@ MonoBehaviour:
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 66d305494f9b41946b3481913e818ca3
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill9.asset
+    m_Address: Skills/DoubleInput/DoubleInput_SD
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 83eb8cd079be27e41873a367efc5eb8a
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill11.asset
+    m_Address: Skills/DoubleInput/DoubleInput_DD
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: ad1e3e10c657fa04db63a6f6ea8e5caa
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill5.asset
+    m_Address: Skills/DoubleInput/DoubleInput_WW
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b2b95416c039abf40a60f0e256b51a95
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill4.asset
+    m_Address: Skills/DoubleInput/DoubleInput_WD
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: cdf4767e4f14e0244b6852fa8b176a15
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill7.asset
+    m_Address: Skills/DoubleInput/DoubleInput_AD
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d681b8eefc9b812418273815fdd23d69
-    m_Address: Assets/Scripts/SO/DoubleInput/Skill8.asset
+    m_Address: Skills/DoubleInput/DoubleInput_AA
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

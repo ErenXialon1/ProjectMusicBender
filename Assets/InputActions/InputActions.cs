@@ -86,6 +86,15 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChainAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""d0e7da83-d2aa-47c1-80ca-0007b442ac9e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -191,11 +200,22 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""4e827931-ed02-4671-937b-e3176844c429"",
-                    ""path"": ""<Keyboard>/leftShift"",
+                    ""path"": ""<Keyboard>/leftCtrl"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""AttackInputClear"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2e9f8277-c59c-4db0-8cad-4b641cce0c0a"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChainAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -366,6 +386,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         m_Battle_LeftAttackInFight = m_Battle.FindAction("LeftAttackInFight", throwIfNotFound: true);
         m_Battle_ConfirmAttack = m_Battle.FindAction("ConfirmAttack", throwIfNotFound: true);
         m_Battle_AttackInputClear = m_Battle.FindAction("AttackInputClear", throwIfNotFound: true);
+        m_Battle_ChainAttack = m_Battle.FindAction("ChainAttack", throwIfNotFound: true);
         // QTE
         m_QTE = asset.FindActionMap("QTE", throwIfNotFound: true);
         m_QTE_QTE_Up = m_QTE.FindAction("QTE_Up", throwIfNotFound: true);
@@ -485,6 +506,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Battle_LeftAttackInFight;
     private readonly InputAction m_Battle_ConfirmAttack;
     private readonly InputAction m_Battle_AttackInputClear;
+    private readonly InputAction m_Battle_ChainAttack;
     public struct BattleActions
     {
         private @InputActions m_Wrapper;
@@ -495,6 +517,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         public InputAction @LeftAttackInFight => m_Wrapper.m_Battle_LeftAttackInFight;
         public InputAction @ConfirmAttack => m_Wrapper.m_Battle_ConfirmAttack;
         public InputAction @AttackInputClear => m_Wrapper.m_Battle_AttackInputClear;
+        public InputAction @ChainAttack => m_Wrapper.m_Battle_ChainAttack;
         public InputActionMap Get() { return m_Wrapper.m_Battle; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -522,6 +545,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @AttackInputClear.started += instance.OnAttackInputClear;
             @AttackInputClear.performed += instance.OnAttackInputClear;
             @AttackInputClear.canceled += instance.OnAttackInputClear;
+            @ChainAttack.started += instance.OnChainAttack;
+            @ChainAttack.performed += instance.OnChainAttack;
+            @ChainAttack.canceled += instance.OnChainAttack;
         }
 
         private void UnregisterCallbacks(IBattleActions instance)
@@ -544,6 +570,9 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
             @AttackInputClear.started -= instance.OnAttackInputClear;
             @AttackInputClear.performed -= instance.OnAttackInputClear;
             @AttackInputClear.canceled -= instance.OnAttackInputClear;
+            @ChainAttack.started -= instance.OnChainAttack;
+            @ChainAttack.performed -= instance.OnChainAttack;
+            @ChainAttack.canceled -= instance.OnChainAttack;
         }
 
         public void RemoveCallbacks(IBattleActions instance)
@@ -650,6 +679,7 @@ public partial class @InputActions: IInputActionCollection2, IDisposable
         void OnLeftAttackInFight(InputAction.CallbackContext context);
         void OnConfirmAttack(InputAction.CallbackContext context);
         void OnAttackInputClear(InputAction.CallbackContext context);
+        void OnChainAttack(InputAction.CallbackContext context);
     }
     public interface IQTEActions
     {
